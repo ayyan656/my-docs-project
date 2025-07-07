@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://my-docs-project-1.onrender.com/", {
   transports: ["websocket"],        // Use WebSocket only
   withCredentials: true,            // Allow cross-origin cookies if needed
   reconnection: true,               // Enable auto-reconnect

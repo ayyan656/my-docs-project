@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000", // 🔁 Replace this in production
+      origin: "https://my-docs-project-1.onrender.com/", // 🔁 Replace this in production
       methods: ["GET", "POST"],
       credentials: true,
     },
