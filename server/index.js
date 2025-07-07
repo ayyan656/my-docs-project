@@ -21,10 +21,17 @@ connectDb();
 // sendShareEmail('naveedayyan89@gmail.com', 'demoDocId12345');
 // ✅ Middlewares
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://my-docs-project-2.onrender.com/"
+];
+
+
+
 app.use(cors({
-  origin: "http://localhost:5173", // React app origin
-  credentials: true
-}));
+  origin: allowedOrigins,
+  credentials: true,
+}))
 
 // ✅ API Routes
 app.use("/api/auth", authRoutes);
