@@ -3,6 +3,14 @@ node_modules/
 .env
 dist/
 
+# Node dependencies
+client/node_modules
+server/node_modules
+
+# Environment files
+client/.env
+server/.env
+
 # Logs
 logs
 *.log
