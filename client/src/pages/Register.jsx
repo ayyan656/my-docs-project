@@ -151,9 +151,10 @@ import { toast } from 'react-toastify';
 const Register = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
+    const user = localStorage.getItem("userInfo");
     if (user) navigate("/");
   }, [navigate]);
 
@@ -164,12 +165,18 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, formData);
+      const res = await axios.post(`${API}/api/auth/register`, formData);
 
-      localStorage.setItem("userInfo", JSON.stringify(res.data));
-      toast.success("Registration successful!");
-      navigate("/");
+      if (res.data?.token) {
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        toast.success("Registration successful!");
+        navigate("/");
+      } else {
+        toast.error("Invalid response from server");
+        console.warn("Missing token or user data in response:", res.data);
+      }
     } catch (err) {
+      console.error("Register error:", err);
       toast.error(err.response?.data?.message || "Registration failed");
     }
   };
@@ -184,7 +191,7 @@ const Register = () => {
             placeholder="Full Name"
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
           />
           <input
             type="email"
@@ -192,7 +199,7 @@ const Register = () => {
             placeholder="Email"
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
           />
           <input
             type="password"
@@ -200,11 +207,11 @@ const Register = () => {
             placeholder="Password"
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
           />
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition duration-200"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md"
           >
             Register
           </button>
