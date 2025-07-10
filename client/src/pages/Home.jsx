@@ -146,7 +146,6 @@
 //   );
 // };
 
-// export default Home;
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -167,7 +166,7 @@ const Home = () => {
 
   const fetchDocuments = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/docs", {
+      const res = await axios.get(`http://localhost:5000/api/docs`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -181,7 +180,7 @@ const Home = () => {
   const createNewDocument = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/docs",
+        `http://localhost:5000/api/docs`,
         { title: "Untitled Document" },
         {
           headers: {
@@ -281,6 +280,8 @@ const Home = () => {
     </div>
   );
 };
+
+export default Home;
 
 // export default Home;
 

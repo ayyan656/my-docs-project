@@ -142,7 +142,7 @@ const Register = () => {
   );
 };
 
-// export default Register;
+export default Register;
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
