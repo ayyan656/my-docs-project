@@ -23,7 +23,6 @@ connectDb();
 app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://my-docs-project-2.onrender.com/"
 ]
 
 
