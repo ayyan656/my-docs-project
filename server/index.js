@@ -17,34 +17,39 @@ const server = http.createServer(app);
 // ✅ Connect to MongoDB
 connectDb();
 
-// Test email on server start
-// sendShareEmail('naveedayyan89@gmail.com', 'demoDocId12345');
-// ✅ Middlewares
+// ✅ Middleware to parse JSON
 app.use(express.json());
+
+// ✅ Fixed CORS setup for Render + local dev
 const allowedOrigins = [
-  "https://my-docs-project-25.onrender.com/",
-]
-
-
+  "https://my-docs-project-25.onrender.com",
+  "http://localhost:5173"
+];
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}))
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
 
 // ✅ API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 
-// ✅ Health check route
+// ✅ Health Check
 app.get("/", (req, res) => {
-  res.send("Google Docs Clone Backend is running 🚀");
+  res.send("✅ Google Docs Clone Backend is running!");
 });
 
-// ✅ Initialize WebSocket with HTTP server AFTER routes
+// ✅ Initialize Socket.io
 initSocket(server);
 
-// ✅ Start server (not `app.listen`)
+// ✅ Start the server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
