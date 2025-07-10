@@ -11,7 +11,7 @@ const sendShareEmail = async (to, docId) => {
       },
     });
 
-    const documentLink = `http://localhost:3000/editor/${docId}`;
+    const documentLink = `https://my-docs-project-25.onrender.com//editor/${docId}`;
 
     const htmlTemplate = `
     <!DOCTYPE html>
