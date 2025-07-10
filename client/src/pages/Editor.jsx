@@ -467,13 +467,13 @@ const Editor = () => {
           <div className="flex items-center mt-2">
             <input
               readOnly
-              value={`http://localhost:5173/editor/${id}`}
+              value={`https://my-docs-project-25.onrender.com//editor/${id}`}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-100 text-sm"
             />
             <button
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `http://localhost:5173/editor/${id}`
+                  `https://my-docs-project-25.onrender.com//editor/${id}`
                 );
                 toast.success("Link copied to clipboard!");
               }}
