@@ -318,8 +318,16 @@ const Editor = () => {
   const [title, setTitle] = useState("");
   const [shareEmail, setShareEmail] = useState("");
   const quillRef = useRef(null);
-  const user = JSON.parse(localStorage.getItem("userInfo"));
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
+  // ✅ Redirect if user is not logged in
+  useEffect(() => {
+    if (!user || !user.token) {
+      toast.error("Please login to access the editor");
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   // Save shortcut
   useEffect(() => {
@@ -343,12 +351,12 @@ const Editor = () => {
         });
         setValue(res.data.content || "");
         setTitle(res.data.title || "");
-      } catch {
-        toast.error("Failed to load document");
+      } catch (err) {
+        toast.error("Failed to load document. You might not be authorized.");
       }
     };
-    fetchDoc();
-  }, [id]);
+    if (user?.token) fetchDoc();
+  }, [id, user]);
 
   // Auto-save content
   useEffect(() => {
@@ -412,9 +420,10 @@ const Editor = () => {
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
-      await axios.post(`https://my-docs-project-2025.onrender.com/api/docs/${id}/share-email`, {
-        email: shareEmail,
-      });
+      await axios.post(
+        `https://my-docs-project-2025.onrender.com/api/docs/${id}/share-email`,
+        { email: shareEmail }
+      );
 
       toast.success("Document shared and email sent!");
       setShareEmail("");
@@ -442,9 +451,7 @@ const Editor = () => {
 
       {/* Title Input */}
       <div className="mb-6">
-        <label className="block text-gray-700 font-medium mb-2">
-          Document Title
-        </label>
+        <label className="block text-gray-700 font-medium mb-2">Document Title</label>
         <input
           type="text"
           value={title}
@@ -456,24 +463,19 @@ const Editor = () => {
 
       {/* Share section */}
       <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4 text-gray-800">
-          🔗 Share Document
-        </h2>
-
+        <h2 className="text-lg font-semibold mb-4 text-gray-800">🔗 Share Document</h2>
         <div className="mb-4">
-          <label className="font-medium text-sm text-gray-700">
-            Document Link
-          </label>
+          <label className="font-medium text-sm text-gray-700">Document Link</label>
           <div className="flex items-center mt-2">
             <input
               readOnly
-              value={`https://my-docs-project-25.onrender.com//editor/${id}`}
+              value={`https://my-docs-project-25.onrender.com/editor/${id}`}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-100 text-sm"
             />
             <button
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `https://my-docs-project-25.onrender.com//editor/${id}`
+                  `https://my-docs-project-25.onrender.com/editor/${id}`
                 );
                 toast.success("Link copied to clipboard!");
               }}
@@ -485,9 +487,7 @@ const Editor = () => {
         </div>
 
         <div>
-          <label className="font-medium text-sm text-gray-700">
-            Share via Email
-          </label>
+          <label className="font-medium text-sm text-gray-700">Share via Email</label>
           <div className="flex gap-2 mt-2">
             <input
               type="email"
@@ -521,6 +521,7 @@ const Editor = () => {
 };
 
 export default Editor;
+
 
 // import React, { useState, useEffect, useRef } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
