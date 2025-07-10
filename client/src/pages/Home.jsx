@@ -20,7 +20,7 @@
 
 //   const fetchDocuments = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:5000/api/docs", {
+//       const res = await axios.get("https://my-docs-project-2025.onrender.com/api/docs", {
 //         headers: {
 //           Authorization: `Bearer ${user.token}`,
 //         },
@@ -34,7 +34,7 @@
 //   const createNewDocument = async () => {
 //     try {
 //       const res = await axios.post(
-//         "http://localhost:5000/api/docs",
+//         "https://my-docs-project-2025.onrender.com/api/docs",
 //         { title: "Untitled Document" },
 //         {
 //           headers: {
@@ -52,7 +52,7 @@
 //     if (!window.confirm("Are you sure you want to delete this document?")) return;
 
 //     try {
-//       await axios.delete(`http://localhost:5000/api/docs/${id}`, {
+//       await axios.delete(`https://my-docs-project-2025.onrender.com/api/docs/${id}`, {
 //         headers: {
 //           Authorization: `Bearer ${user.token}`,
 //         },
@@ -166,7 +166,7 @@ const Home = () => {
 
   const fetchDocuments = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/docs`, {
+      const res = await axios.get(`https://my-docs-project-2025.onrender.com/api/docs`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -180,7 +180,7 @@ const Home = () => {
   const createNewDocument = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/docs`,
+        `https://my-docs-project-2025.onrender.com/api/docs`,
         { title: "Untitled Document" },
         {
           headers: {
@@ -197,7 +197,7 @@ const Home = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this document?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/docs/${id}`, {
+      await axios.delete(`https://my-docs-project-2025.onrender.com/api/docs/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       toast.success("Document deleted");

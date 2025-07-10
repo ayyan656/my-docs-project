@@ -37,7 +37,7 @@
 //   useEffect(() => {
 //     const fetchDoc = async () => {
 //       try {
-//         const res = await axios.get(`http://localhost:5000/api/docs/${id}`, {
+//         const res = await axios.get(`https://my-docs-project-2025.onrender.com/api/docs/${id}`, {
 //           headers: { Authorization: `Bearer ${user.token}` },
 //         });
 //         setValue(res.data.content || "");
@@ -68,7 +68,7 @@
 //   const saveContent = async () => {
 //     try {
 //       await axios.put(
-//         `http://localhost:5000/api/docs/${id}`,
+//         `https://my-docs-project-2025.onrender.com/api/docs/${id}`,
 //         { content: value },
 //         { headers: { Authorization: `Bearer ${user.token}` } }
 //       );
@@ -80,7 +80,7 @@
 //   const saveTitle = async () => {
 //     try {
 //       await axios.put(
-//         `http://localhost:5000/api/docs/${id}`,
+//         `https://my-docs-project-2025.onrender.com/api/docs/${id}`,
 //         { title },
 //         { headers: { Authorization: `Bearer ${user.token}` } }
 //       );
@@ -113,7 +113,7 @@
 
 //     try {
 //       await axios.post(
-//         `http://localhost:5000/api/docs/${id}/share`,
+//         `https://my-docs-project-2025.onrender.com/api/docs/${id}/share`,
 //         {
 //           email: shareEmail,
 //         },
@@ -122,7 +122,7 @@
 //         }
 //       );
 
-//       await axios.post(`http://localhost:5000/api/docs/${id}/share-email`, {
+//       await axios.post(`https://my-docs-project-2025.onrender.com/api/docs/${id}/share-email`, {
 //         email: shareEmail,
 //       });
 
@@ -338,7 +338,7 @@ const Editor = () => {
   useEffect(() => {
     const fetchDoc = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/docs/${id}`, {
+        const res = await axios.get(`https://my-docs-project-2025.onrender.com/api/docs/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setValue(res.data.content || "");
@@ -365,7 +365,7 @@ const Editor = () => {
   const saveContent = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/docs/${id}`,
+        `https://my-docs-project-2025.onrender.com/api/docs/${id}`,
         { content: value },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -377,7 +377,7 @@ const Editor = () => {
   const saveTitle = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/docs/${id}`,
+        `https://my-docs-project-2025.onrender.com/api/docs/${id}`,
         { title },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -407,12 +407,12 @@ const Editor = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/docs/${id}/share`,
+        `https://my-docs-project-2025.onrender.com/api/docs/${id}/share`,
         { email: shareEmail },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
-      await axios.post(`http://localhost:5000/api/docs/${id}/share-email`, {
+      await axios.post(`https://my-docs-project-2025.onrender.com/api/docs/${id}/share-email`, {
         email: shareEmail,
       });
 
