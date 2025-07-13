@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 require("dotenv").config();
-const path = require("path");
+// const path = require("path");
 
 const connectDb = require("./Config/db");
 const documentRoutes = require("./routes/documentRoutes");
@@ -41,12 +41,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 
 // ✅ Serve frontend build
-app.use(express.static(path.join(__dirname, '../client/dist')));
+// app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // ✅ Fallback route — MUST come after other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+// });
 
 // ✅ Health check (optional)
 app.get("/", (req, res) => {
