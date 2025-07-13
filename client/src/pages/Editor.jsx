@@ -443,9 +443,10 @@ const Editor = () => {
           <IoArrowBackCircleOutline size={22} />
           Back to Home
         </div>
-        <h1 className="text-2xl font-bold text-gray-800">
-          📝 Collaborative Editor
-        </h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 text-center sm:text-left">
+  📝 Collaborative Editor
+</h1>
+
         <div></div>
       </div>
 
@@ -469,13 +470,13 @@ const Editor = () => {
           <div className="flex items-center mt-2">
             <input
               readOnly
-              value={`https://my-docs-project-25.onrender.com/editor/${id}`}
+              value={`https://my-docs-project-2025.onrender.com/editor/${id}`}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-100 text-sm"
             />
             <button
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `https://my-docs-project-25.onrender.com/editor/${id}`
+                  `https://my-docs-project-2025.onrender.com/${id}`
                 );
                 toast.success("Link copied to clipboard!");
               }}
