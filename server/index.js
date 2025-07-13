@@ -1,29 +1,28 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-const path = require("path");
 require("dotenv").config();
+const path = require("path");
 
 const connectDb = require("./Config/db");
 const documentRoutes = require("./routes/documentRoutes");
 const authRoutes = require("./routes/authRoutes");
 const initSocket = require("./Socket/socket");
+const sendShareEmail = require('./utils/mailer');
 
 const app = express();
-
-// ✅ Create HTTP server (for socket support)
 const server = http.createServer(app);
 
-// ✅ Connect to MongoDB
+// ✅ Connect to DB
 connectDb();
 
-// ✅ JSON parsing
+// ✅ Middleware
 app.use(express.json());
 
-// ✅ Setup CORS for Render + local dev
+// ✅ CORS
 const allowedOrigins = [
-  "https://my-docs-project-25.onrender.com", // frontend
-  "http://localhost:5173",                   // local dev
+  "https://my-docs-project-25.onrender.com",
+  "http://localhost:5173",
 ];
 
 app.use(cors({
@@ -34,25 +33,25 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true,
+  credentials: true
 }));
 
-// ✅ API routes (IMPORTANT: placed before static files)
+// ✅ API Routes — These must come BEFORE frontend serving
 app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 
-// ✅ Serve frontend (Vite build output)
+// ✅ Serve frontend build
 app.use(express.static(path.join(__dirname, "client", "dist")));
 
-// // ✅ Handle SPA routes (React Router support)
+// ✅ Fallback route — MUST come after other routes
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-// // ✅ Health check (optional)
-// app.get("/health", (req, res) => {
-//   res.send("✅ Google Docs Clone Backend is running!");
-// });
+// ✅ Health check (optional)
+app.get("/", (req, res) => {
+  res.send("✅ Google Docs Backend running!");
+});
 
 // ✅ Init WebSocket
 initSocket(server);
