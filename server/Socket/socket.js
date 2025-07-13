@@ -3,44 +3,43 @@ const { Server } = require("socket.io");
 const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://my-docs-project-25.onrender.com", // 🔁 Replace this in production
+      origin: [
+        "https://my-docs-project-25.onrender.com", // frontend domain
+        "http://localhost:5173",                    // local dev (optional)
+      ],
       methods: ["GET", "POST"],
       credentials: true,
     },
+    pingTimeout: 60000, // Optional: Helps keep connections alive
   });
 
   io.on("connection", (socket) => {
-    console.log("🟢 New client connected:", socket.id);
+    console.log("🟢 Client connected:", socket.id);
 
-    // 🎯 Join document room
+    // Join a document room
     socket.on("join-document", (documentId) => {
       if (documentId) {
         socket.join(documentId);
-        console.log(`📄 User ${socket.id} joined room: ${documentId}`);
+        console.log(`📄 Socket ${socket.id} joined document room: ${documentId}`);
       }
     });
 
-    // 📝 Listen for changes and broadcast
+    // Broadcast content changes to others in the room
     socket.on("send-changes", ({ documentId, delta }) => {
       if (documentId && delta) {
-        console.log(`✏️ Broadcasting changes for document: ${documentId}`);
         socket.to(documentId).emit("receive-changes", delta);
+        console.log(`✏️ Sent changes for document: ${documentId}`);
       }
     });
 
-    // 🔌 Disconnect event
+    // Handle disconnect
     socket.on("disconnect", (reason) => {
-      console.log(`🔴 Client disconnected: ${socket.id} (${reason})`);
+      console.log(`🔴 Disconnected: ${socket.id} (${reason})`);
     });
 
-    // ⚠️ Error handling
+    // Error handling
     socket.on("error", (err) => {
       console.error("❌ Socket error:", err);
-    });
-
-    // 🔁 Optional reconnect logic (from client)
-    socket.on("reconnect_attempt", () => {
-      console.log(`🔁 Reconnection attempt by ${socket.id}`);
     });
   });
 };
