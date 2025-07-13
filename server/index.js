@@ -20,6 +20,8 @@ connectDb();
 // ✅ Middleware to parse JSON
 app.use(express.json());
 
+
+
 // ✅ Fixed CORS setup for Render + local dev
 const allowedOrigins = [
   "https://my-docs-project-25.onrender.com",
@@ -36,6 +38,13 @@ app.use(cors({
   },
   credentials: true
 }));
+
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+// All other GET requests not handled before will return React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 // ✅ API Routes
 app.use("/api/auth", authRoutes);
