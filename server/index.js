@@ -1,28 +1,29 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-require("dotenv").config();
 const path = require("path");
+require("dotenv").config();
 
 const connectDb = require("./Config/db");
 const documentRoutes = require("./routes/documentRoutes");
 const authRoutes = require("./routes/authRoutes");
 const initSocket = require("./Socket/socket");
-const sendShareEmail = require('./utils/mailer');
 
 const app = express();
+
+// ✅ Create HTTP server (for socket support)
 const server = http.createServer(app);
 
 // ✅ Connect to MongoDB
 connectDb();
 
-// ✅ Middleware
+// ✅ JSON parsing
 app.use(express.json());
 
-// ✅ CORS setup
+// ✅ Setup CORS for Render + local dev
 const allowedOrigins = [
-  "https://my-docs-project-25.onrender.com",
-  "http://localhost:5173"
+  "https://my-docs-project-25.onrender.com", // frontend
+  "http://localhost:5173",                   // local dev
 ];
 
 app.use(cors({
@@ -33,22 +34,27 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true
+  credentials: true,
 }));
 
-// ✅ API Routes (Put these BEFORE static serving)
+// ✅ API routes (IMPORTANT: placed before static files)
 app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 
-// ✅ Serve frontend from Vite (React)
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+// ✅ Serve frontend (Vite build output)
+app.use(express.static(path.join(__dirname, "client", "dist")));
 
-// ✅ All client-side routes go to index.html (React SPA)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+// ✅ Handle SPA routes (React Router support)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-// ✅ WebSocket
+// ✅ Health check (optional)
+app.get("/health", (req, res) => {
+  res.send("✅ Google Docs Clone Backend is running!");
+});
+
+// ✅ Init WebSocket
 initSocket(server);
 
 // ✅ Start server
