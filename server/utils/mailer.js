@@ -11,7 +11,7 @@ const sendShareEmail = async (to, docId) => {
       },
     });
 
-    const documentLink = `https://my-docs-project-2001.vercel.app/editor/${docId}`;
+    const documentLink = `https://my-docs-project-2972.vercel.app/editor/${docId}`;
 
     const htmlTemplate = `
     <!DOCTYPE html>

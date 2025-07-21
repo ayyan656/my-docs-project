@@ -4,7 +4,7 @@ const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
       origin: [
-        "https://my-docs-project-2001.vercel.app/",
+        "https://my-docs-project-2972.vercel.app",
       ],
       methods: ["GET", "POST"],
       credentials: true,
