@@ -6,7 +6,7 @@ const protect = require("../middleware/authMiddleware");
 const sendShareEmail = require("../utils/mailer");
 
 // 👉 Create a new document
-router.post("/", protect, async (req, res) => {
+router.post("/", async (req, res) => {
   const { title } = req.body;
 
   try {
@@ -23,7 +23,7 @@ router.post("/", protect, async (req, res) => {
 });
 
 // 👉 Get all documents (owned or shared)
-router.get("/", protect, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const docs = await Document.find({
       $or: [
@@ -39,7 +39,7 @@ router.get("/", protect, async (req, res) => {
 });
 
 // 👉 Get a single document (access check)
-router.get("/:id", protect, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const doc = await Document.findById(req.params.id);
     if (!doc) return res.status(404).json({ message: "Document not found" });
@@ -58,34 +58,56 @@ router.get("/:id", protect, async (req, res) => {
 });
 
 // 👉 Update a document (title or content)
-router.put("/:id", protect, async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { content, title } = req.body;
-    const doc = await Document.findById(req.params.id);
 
-    if (!doc) return res.status(404).json({ message: "Document not found" });
-
-    const isOwner = doc.owner.toString() === req.user._id.toString();
-    const isCollaborator = doc.collaborators.includes(req.user._id);
-
-    if (!isOwner && !isCollaborator) {
-      return res.status(403).json({ message: "You don't have permission to edit this document" });
+    // Validate document ID
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid document ID" });
     }
 
-    if (typeof title !== 'undefined') doc.title = title;
-    if (typeof content !== 'undefined') doc.content = content;
+    const doc = await Document.findById(req.params.id);
+
+    if (!doc) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    const userId = mongoose.Types.ObjectId(req.user._id);
+
+    const isOwner = doc.owner.equals(userId);
+    const isCollaborator = doc.collaborators.some(collabId =>
+      collabId.equals(userId)
+    );
+
+    if (!isOwner && !isCollaborator) {
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to edit this document" });
+    }
+
+    if (typeof title !== "undefined") {
+      doc.title = title;
+    }
+
+    if (typeof content !== "undefined") {
+      doc.content = content;
+    }
 
     doc.updatedAt = new Date();
     await doc.save();
 
     res.status(200).json(doc);
   } catch (err) {
-    res.status(500).json({ message: "Failed to update document", error: err.message });
+    console.error("❌ Error updating document:", err);
+    res
+      .status(500)
+      .json({ message: "Failed to update document", error: err.message });
   }
 });
 
 // 👉 Share document with another user (add collaborator)
-router.post("/:id/share", protect, async (req, res) => {
+router.post("/:id/share", async (req, res) => {
   const { email } = req.body;
   const documentId = req.params.id;
 
@@ -129,7 +151,7 @@ router.post("/:id/share-email", async (req, res) => {
 });
 
 // 👉 Delete a document (only owner can delete)
-router.delete("/:id", protect, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const doc = await Document.findById(req.params.id);
     if (!doc) return res.status(404).json({ message: "Document not found" });
