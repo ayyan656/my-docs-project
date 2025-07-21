@@ -18,9 +18,9 @@ connectDb();
 // ✅ Middleware
 app.use(express.json());
 
-// ✅ CORS
+// ✅ CORS Fix: No trailing slash in origins
 const allowedOrigins = [
-  "https://my-docs-project-2025.vercel.app/",
+  "https://my-docs-project-2025.vercel.app",
   "http://localhost:5173",
 ];
 
@@ -35,13 +35,11 @@ app.use(cors({
   credentials: true
 }));
 
-// ✅ API Routes — These must come BEFORE frontend serving
+// ✅ API Routes — Must come BEFORE frontend
 app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 
-
-
-// ✅ Health check (optional)
+// ✅ Health check
 app.get("/", (req, res) => {
   res.send("✅ Google Docs Backend running!");
 });

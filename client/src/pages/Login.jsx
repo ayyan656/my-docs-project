@@ -1,4 +1,3 @@
-// export default Login;
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -23,10 +22,11 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post('https://my-docs-project-2025.onrender.com//api/auth/login', {
-        email,
-        password
-      });
+      const res = await axios.post(
+        'https://my-docs-project-2025.onrender.com/api/auth/login',
+        { email, password },
+        { withCredentials: true } // in case your backend uses cookies
+      );
 
       localStorage.setItem("userInfo", JSON.stringify(res.data));
       toast.success("Login successful!");
