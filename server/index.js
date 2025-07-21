@@ -12,6 +12,8 @@ const sendShareEmail = require('./utils/mailer');
 const app = express();
 const server = http.createServer(app);
 
+
+
 // ✅ Connect to DB
 connectDb();
 
@@ -20,7 +22,7 @@ app.use(express.json());
 
 // ✅ CORS Fix: No trailing slash in origins
 const allowedOrigins = [
-  "https://my-docs-project-2001.vercel.app/",
+  "https://my-docs-project-2001.vercel.app",
 ];
 
 app.use(cors({
