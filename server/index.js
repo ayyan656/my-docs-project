@@ -20,6 +20,7 @@ app.use(express.json());
 
 // ✅ CORS
 const allowedOrigins = [
+  "https://my-docs-project-2025.vercel.app/",
   "http://localhost:5173",
 ];
 

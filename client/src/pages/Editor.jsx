@@ -43,7 +43,7 @@ const Editor = () => {
   useEffect(() => {
     const fetchDoc = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/docs/${id}`, {
+        const res = await axios.get(`https://my-docs-project-2025.onrender.com//api/docs/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setValue(res.data.content || "");
@@ -70,7 +70,7 @@ const Editor = () => {
   const saveContent = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/docs/${id}`,
+        `https://my-docs-project-2025.onrender.com//api/docs/${id}`,
         { content: value },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -82,7 +82,7 @@ const Editor = () => {
   const saveTitle = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/docs/${id}`,
+        `https://my-docs-project-2025.onrender.com//api/docs/${id}`,
         { title },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -112,13 +112,13 @@ const Editor = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/docs/${id}/share`,
+        `https://my-docs-project-2025.onrender.com//api/docs/${id}/share`,
         { email: shareEmail },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
       await axios.post(
-        `http://localhost:5000/api/docs/${id}/share-email`,
+        `https://my-docs-project-2025.onrender.com//api/docs/${id}/share-email`,
         { email: shareEmail }
       );
 
@@ -167,13 +167,13 @@ const Editor = () => {
           <div className="flex items-center mt-2">
             <input
               readOnly
-              value={`http://localhost:5000/editor/${id}`}
+              value={`https://my-docs-project-2025.onrender.com//editor/${id}`}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-100 text-sm"
             />
             <button
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `http://localhost:5000/${id}`
+                  `https://my-docs-project-2025.onrender.com//${id}`
                 );
                 toast.success("Link copied to clipboard!");
               }}
