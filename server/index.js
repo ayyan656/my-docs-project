@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 require("dotenv").config();
-// const path = require("path");
 
 const connectDb = require("./Config/db");
 const documentRoutes = require("./routes/documentRoutes");
@@ -21,7 +20,6 @@ app.use(express.json());
 
 // ✅ CORS
 const allowedOrigins = [
-  "https://my-docs-project-25.onrender.com",
   "http://localhost:5173",
 ];
 
@@ -40,13 +38,7 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 
-// ✅ Serve frontend build
-// app.use(express.static(path.join(__dirname, '../client/dist')));
 
-// ✅ Fallback route — MUST come after other routes
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-// });
 
 // ✅ Health check (optional)
 app.get("/", (req, res) => {

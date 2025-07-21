@@ -4,7 +4,6 @@ const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
       origin: [
-        "https://my-docs-project-25.onrender.com", // frontend domain
         "http://localhost:5173",                    // local dev (optional)
       ],
       methods: ["GET", "POST"],
