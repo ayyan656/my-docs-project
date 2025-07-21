@@ -6,8 +6,8 @@ const sendShareEmail = async (to, docId) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: naveedtailorbwp@gmail.com,
-        pass: tjtdhhgqtrokfnrn,
+        user: "naveedtailorbwp@gmail.com",
+        pass: "tjtdhhgqtrokfnrn",
       },
     });
 
