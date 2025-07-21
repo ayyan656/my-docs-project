@@ -21,7 +21,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://my-docs-project-2025.onrender.com//api/auth/register", formData);
+      const res = await axios.post("https://my-docs-project-2025.onrender.com/api/auth/register", formData);
 
       localStorage.setItem("userInfo", JSON.stringify(res.data));
       toast.success("Registration successful!");
